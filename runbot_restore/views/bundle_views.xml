@@ -1,0 +1,14 @@
+<odoo>
+  <data>
+
+    <record id="view_runbot_bundle" model="ir.ui.view">
+        <field name="model">runbot.bundle</field>
+        <field name="inherit_id" ref="runbot.view_runbot_bundle"/>
+        <field name="arch" type="xml">
+            <field name="host_id" position="after">
+                <field name="db_url"/>
+            </field>
+        </field>
+    </record>
+  </data>
+</odoo>
