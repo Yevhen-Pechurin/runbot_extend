@@ -17,7 +17,6 @@ class ConfigStep(models.Model):
             if bundle and bundle.db_url:
                 values['config_data'].update({
                     'dump_url': bundle.db_url,
-                    'db_name': 'restore',
                 })
         return super(ConfigStep, self).create(values)
 
