@@ -6,6 +6,7 @@ class Bundle(models.Model):
     _inherit = 'runbot.bundle'
 
     db_url = fields.Char(help='Using for restore step')
+    db_name = fields.Char(string='Running database')
 
 
 class ConfigStep(models.Model):
