@@ -87,7 +87,7 @@ class ConfigStep(models.Model):
         self.env['runbot.runbot']._reload_nginx()
         return dict(cmd=cmd, log_path=log_path, build_dir=build_path, container_name=docker_name, exposed_ports=[build_port, build_port + 1], ro_volumes=exports, env_variables=env_variables)
 
-    def _run_update_database(self, build, log_path):
+    def _run_run_odoo_with_database(self, build, log_path):
         exports = build._checkout()
         build.job_start = now()
 
