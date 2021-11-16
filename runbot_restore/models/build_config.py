@@ -19,6 +19,10 @@ class ConfigStep(models.Model):
                 values['config_data'].update({
                     'dump_url': bundle.db_url,
                 })
+            if bundle and bundle.db_name:
+                values['config_data'].update({
+                    'db_name': bundle.db_name,
+                })
         return super(ConfigStep, self).create(values)
 
 
