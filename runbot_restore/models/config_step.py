@@ -94,3 +94,9 @@ class ConfigStep(models.Model):
         build.params_id.create_batch_id.bundle_id.last_batch.slot_ids.build_id._ask_kill()
         self.env['runbot.runbot']._reload_nginx()
         return dict(cmd=cmd, log_path=log_path, build_dir=build_path, container_name=docker_name, exposed_ports=[build_port, build_port + 1], ro_volumes=exports, env_variables=env_variables)
+
+    def _is_docker_step(self):
+        if not self:
+            return False
+        self.ensure_one()
+        return super(ConfigStep, self)._is_docker_step() or self.job_type in ('restore_database', 'run_odoo_with_database')
