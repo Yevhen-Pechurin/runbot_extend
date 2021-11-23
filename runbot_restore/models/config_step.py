@@ -28,7 +28,7 @@ class ConfigStep(models.Model):
         cmd = ' && '.join([
             'mkdir /data/build/restore',
             'cd /data/build/restore',
-            'cp /data/build/source .',
+            'cp /data/build/source/%s .' % zip_name,
             'unzip -q %s' % zip_name,
             'echo "### restoring filestore"',
             'mkdir -p /data/build/datadir/filestore/%s' % restore_db_name,
@@ -43,7 +43,7 @@ class ConfigStep(models.Model):
 
         ])
         ro_volumes = {
-            dump_url: 'source'
+            'source': dump_url.replace(dump_url.split('/')[-1], '')
         }
 
         return dict(cmd=cmd, log_path=log_path, build_dir=build._path(), container_name=build._get_docker_name(), cpu_limit=self.cpu_limit, ro_volumes=ro_volumes)
