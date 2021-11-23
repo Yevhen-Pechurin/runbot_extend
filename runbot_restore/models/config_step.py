@@ -13,6 +13,7 @@ class ConfigStep(models.Model):
         ('restore_database', 'Restore Database'),
         ('run_odoo_with_database', 'Run odoo with database'),
     ])
+    config_path = fields.Char()
 
     def _run_restore_database(self, build, log_path):
         params = build.params_id
@@ -43,9 +44,8 @@ class ConfigStep(models.Model):
 
         ])
         ro_volumes = {
-            'source': dump_url.replace(dump_url.split('/')[-1], '')
+            'source': dump_url.replace(dump_url.split('/')[-1], ''),
         }
-
         return dict(cmd=cmd, log_path=log_path, build_dir=build._path(), container_name=build._get_docker_name(), cpu_limit=self.cpu_limit, ro_volumes=ro_volumes)
 
     def _run_run_odoo_with_database(self, build, log_path):
@@ -100,3 +100,13 @@ class ConfigStep(models.Model):
             return False
         self.ensure_one()
         return super(ConfigStep, self)._is_docker_step() or self.job_type in ('restore_database', 'run_odoo_with_database')
+
+    def _run_run_odoo(self, build, log_path, force=False):
+        res = super(ConfigStep, self)._run_run_odoo(build, log_path, force)
+        if self.config_path:
+            config_name = self.config_path.split('/')[-1]
+            res['cmd'] += '-c /data/build/config/%s' % config_name
+            res['ro_volumes'].update({
+                'config': self.config_path.replace(self.config_path.split('/')[-1], '')
+            })
+        return res
