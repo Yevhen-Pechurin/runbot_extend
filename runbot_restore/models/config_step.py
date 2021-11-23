@@ -105,7 +105,7 @@ class ConfigStep(models.Model):
         res = super(ConfigStep, self)._run_run_odoo(build, log_path, force)
         if self.config_path:
             config_name = self.config_path.split('/')[-1]
-            res['cmd'] += '-c /data/build/config/%s' % config_name
+            res['cmd'] += ['-c', '/data/build/config/%s' % config_name]
             res['ro_volumes'].update({
                 'config': self.config_path.replace(self.config_path.split('/')[-1], '')
             })

@@ -10,6 +10,7 @@
     'depends': ['runbot'],
     'data': [
         'views/bundle_views.xml',
+        'views/config_views.xml',
     ],
     'license': 'LGPL-3',
 }
