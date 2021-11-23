@@ -34,7 +34,7 @@ class ConfigStep(models.Model):
             'mkdir -p /data/build/datadir/filestore/%s' % restore_db_name,
             'mv filestore/* /data/build/datadir/filestore/%s' % restore_db_name,
             'echo "###restoring db"',
-            'psql -q -h host.docker.internal %s < dump.sql' % (restore_db_name),
+            'psql -q %s < dump.sql' % (restore_db_name),
             'cd /data/build',
             'echo "### cleaning"',
             'rm -r restore',
