@@ -1,5 +1,10 @@
+import logging
 from odoo import models, fields
+from odoo.addons.runbot.common import local_pgadmin_cursor
 from odoo.exceptions import UserError
+from psycopg2 import sql
+
+_logger = logging.getLogger(__name__)
 
 
 class Bundle(models.Model):
@@ -7,6 +12,17 @@ class Bundle(models.Model):
 
     db_url = fields.Char(help='Using for restore step')
     db_name = fields.Char(string='Running database')
+
+
+class BuildResult(models.Model):
+    _inherit = 'runbot.build'
+
+    def _local_pg_copydb(self, dbname, dbcopy):
+        self._local_pg_dropdb(dbname)
+        _logger.info("createdb %s", dbname)
+        with local_pgadmin_cursor() as local_cr:
+            local_cr.execute(sql.SQL("""CREATE DATABASE {} TEMPLATE %s LC_COLLATE 'C' ENCODING 'unicode'""").format(sql.Identifier(dbname)), (dbcopy,))
+        self.env['runbot.database'].create({'name': dbname, 'build_id': self.id})
 
 
 class ConfigStep(models.Model):
