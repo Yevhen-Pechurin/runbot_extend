@@ -10,7 +10,7 @@ _logger = logging.getLogger(__name__)
 class Bundle(models.Model):
     _inherit = 'runbot.bundle'
 
-    db_url = fields.Char(help='Using for restore step')
+    db_url = fields.Char(help='Path to db backup. Using for restore step', string='Db Path')
     db_name = fields.Char(string='Running database')
 
 
